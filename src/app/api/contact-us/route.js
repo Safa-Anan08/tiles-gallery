@@ -1,25 +1,27 @@
-import { connectDB } from "@/lib/db";
-import Contact from "@/models/Contact";
+import { NextResponse } from "next/server";
+import { MongoClient } from "mongodb";
+
+const client = new MongoClient(process.env.MONGODB_URI);
 
 export async function POST(req) {
   try {
-    await connectDB();
-
     const body = await req.json();
 
-    const saved = await Contact.create(body);
+    await client.connect();
+    const db = client.db("tiles-gallery");
+    const messages = db.collection("messages");
 
-    return Response.json({
-      success: true,
-      message: "Message saved successfully",
-      data: saved,
+    await messages.insertOne({
+      name: body.name,
+      email: body.email,
+      message: body.message,
+      createdAt: new Date(),
     });
 
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.log("CONTACT API ERROR:", error);
-
-    return Response.json(
-      { success: false, message: "Server error" },
+    return NextResponse.json(
+      { success: false, error: "Failed to save message" },
       { status: 500 }
     );
   }
