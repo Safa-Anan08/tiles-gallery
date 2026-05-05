@@ -166,7 +166,7 @@ export default function Footer() {
 
      
       <div className="text-center py-4 border-t border-gray-700 text-gray-400 text-sm">
-        &copy {new Date().getFullYear()} Tiles Gallery. All rights reserved.
+        &copy; {new Date().getFullYear()} Tiles Gallery. All rights reserved.
       </div>
 
     </footer>
