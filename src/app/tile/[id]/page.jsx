@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
-import { toast } from "sonner";
 import { FaHeart } from "react-icons/fa";
+import { useWishlist } from "@/wishlistButton/useWishlist";
 
 export default function TileDetails() {
   const params = useParams();
@@ -16,65 +16,31 @@ export default function TileDetails() {
   const session = authClient.useSession();
 
   useEffect(() => {
-const loadTile = async () => {
-  try {
-    const res = await fetch(`http://localhost:5000/tiles/${id}`);
-
-    if (!res.ok) {
-      throw new Error("Tile not found");
-    }
-
-    const data = await res.json();
-    setTile(data);
-
-  } catch (err) {
-    console.log("Error loading tile:", err);
-  } finally {
-    setLoading(false);
-  }
-};
+    const loadTile = async () => {
+      try {
+        const res = await fetch(`http://localhost:5000/tiles/${id}`);
+        const data = await res.json();
+        setTile(data);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
     if (id) loadTile();
   }, [id]);
 
-  const handleWishlist = async () => {
-    if (!session?.data?.user) {
-      toast.error("Please login first");
-      return;
-    }
-
-    const wishlistData = {
-      tileId: tile.id,
-      title: tile.title,
-      image: tile.image,
-      price: tile.price,
-      category: tile.category,
-      description: tile.description,
-      userEmail: session.data.user.email,
-    };
-
-    const res = await fetch("/api/wishlist", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(wishlistData),
-    });
-
-    const data = await res.json();
-
-    if (data.message === "Already in wishlist") {
-      toast.error("Already added to wishlist");
-      return;
-    }
-
-    toast.success("Added to wishlist ");
-  };
+  const {
+    isWishlisted,
+    toggleWishlist,
+    loading: wishLoading,
+  } = useWishlist(tile, session?.data?.user);
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <span className="loading loading-spinner loading-lg"></span>
+        <div className="w-10 h-10 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -82,78 +48,59 @@ const loadTile = async () => {
   if (!tile) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <h2 className="text-2xl font-bold">
-          Tile not found
-        </h2>
+        <h2 className="text-2xl font-bold">Tile not found</h2>
       </div>
     );
   }
 
   return (
-    <section className="min-h-screen bg-base-200 p-6 md:p-12">
+    <section className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-200 py-10 px-4">
 
-      <div className="max-w-5xl mx-auto card bg-base-100 shadow-2xl">
+      <div className="max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
 
-    
-        <figure>
+        <div className="relative">
           <img
             src={tile.image}
             alt={tile.title}
-            className="w-full h-[400px] object-cover"
+            className="w-full h-[420px] object-cover"
           />
-        </figure>
 
-      
-        <div className="card-body space-y-4">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
 
-          <h1 className="text-3xl font-bold">
+          <h1 className="absolute bottom-6 left-6 text-3xl md:text-4xl font-bold text-white">
             {tile.title}
           </h1>
+        </div>
 
-          <p className="text-base-content/70">
+        <div className="p-6 md:p-10 space-y-6">
+
+          <p className="text-gray-600 leading-relaxed">
             {tile.description}
           </p>
 
-          <div className="grid md:grid-cols-2 gap-4 mt-4">
+          <div className="grid md:grid-cols-2 gap-6">
 
-            <div className="p-4 border rounded-lg space-y-2">
-
-              <p>
-                <b>ID:</b> {tile.id}
-              </p>
-
-              <p>
-                <b>Category:</b> {tile.category}
-              </p>
-
-              <p>
-                <b>Material:</b> {tile.material}
-              </p>
-
-              <p>
-                <b>Dimensions:</b> {tile.dimensions}
-              </p>
-
+            <div className="p-5 rounded-2xl border bg-gray-50 space-y-2">
+              <p><b>ID:</b> {tile.id}</p>
+              <p><b>Category:</b> {tile.category}</p>
+              <p><b>Material:</b> {tile.material}</p>
+              <p><b>Dimensions:</b> {tile.dimensions}</p>
             </div>
 
-            <div className="p-4 border rounded-lg space-y-2">
+            <div className="p-5 rounded-2xl border bg-gray-50 space-y-3">
 
-              <p className="text-xl font-bold text-primary">
-                Price: ${tile.price} {tile.currency}
+              <p className="text-2xl font-bold text-green-600">
+                ${tile.price} {tile.currency}
               </p>
 
               <p>
                 Status:
                 <span
-                  className={
-                    tile.inStock
-                      ? "text-green-500 ml-2"
-                      : "text-red-500 ml-2"
-                  }
+                  className={`ml-2 font-semibold ${
+                    tile.inStock ? "text-green-500" : "text-red-500"
+                  }`}
                 >
-                  {tile.inStock
-                    ? "In Stock"
-                    : "Out of Stock"}
+                  {tile.inStock ? "In Stock" : "Out of Stock"}
                 </span>
               </p>
 
@@ -161,20 +108,30 @@ const loadTile = async () => {
 
           </div>
 
-          <div className="flex gap-4 pt-4">
+          <div className="pt-4">
 
             <button
-              onClick={handleWishlist}
-              className="btn btn-error text-white"
+              onClick={toggleWishlist}
+              disabled={wishLoading}
+              className={`
+                flex items-center gap-2 px-6 py-3 rounded-full
+                font-semibold shadow-lg transition-all hover:scale-105
+                ${
+                  isWishlisted
+                    ? "bg-gray-800 text-white"
+                    : "bg-gradient-to-r from-red-500 to-pink-500 text-white"
+                }
+              `}
             >
-              <FaHeart className="text-white" /> Add Wishlist
+              <FaHeart />
+              {isWishlisted
+                ? "Remove from Wishlist"
+                : "Add to Wishlist"}
             </button>
-
 
           </div>
 
         </div>
-
       </div>
 
     </section>
