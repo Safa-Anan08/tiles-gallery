@@ -24,11 +24,16 @@ export default function Banner() {
             </p>
 
             <Link
-              href="/all-tiles"
-              className="btn mt-6 bg-black text-white"
-            >
-              Browse Now <FaArrowRight />
-            </Link>
+               href="/all-tiles" className="group mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl 
+          bg-gradient-to-r from-black via-gray-900 to-black 
+         text-white font-semibold shadow-lg hover:shadow-[0_0_25px_rgba(0,0,0,0.4)] transition-all duration-300 ease-in-out hover:scale-[1.03]"
+>
+  Browse Now
+
+  <FaArrowRight
+    className="transition-transform duration-300 group-hover:translate-x-1"
+  />
+</Link>
           </div>
 
           <img
@@ -54,7 +59,7 @@ export default function Banner() {
       </div>
     </div>
     <div className="flex items-start gap-3 bg-base-100 p-4 rounded-xl">
-      <div className="bg-gray-100 text-gray-700 p-2 rounded-lg text-base">
+      <div className="bg-gray-100 text-yellow-400 p-2 rounded-lg text-base">
         <FaStar />
       </div>
       <div>
@@ -67,7 +72,7 @@ export default function Banner() {
 
 
     <div className="flex items-start gap-3 bg-base-100 p-4 rounded-xl">
-      <div className="bg-gray-100 text-gray-700 p-2 rounded-lg text-base">
+      <div className="bg-gray-100 text-red-500 p-2 rounded-lg text-base">
         <FaHeart />
       </div>
       <div>

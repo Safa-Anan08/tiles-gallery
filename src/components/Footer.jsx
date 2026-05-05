@@ -114,9 +114,6 @@ export default function Footer() {
           <h3 className="text-xl font-semibold mb-4">
             Send Message
           </h3>
-          <h1 className="text-4xl text-red-500 font-bold">
-  Tailwind Working?
-</h1>
 
           <form
             onSubmit={handleSubmit}
