@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
+import { FaGoogle } from "react-icons/fa";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -14,26 +15,27 @@ export default function RegisterPage() {
   const [image, setImage] = useState("");
   const [password, setPassword] = useState("");
 
- const handleRegister = async (e) => {
-  e.preventDefault();
+  const handleRegister = async (e) => {
+    e.preventDefault();
 
-  const { error } = await authClient.signUp.email({
-    name,
-    email,
-    password,
-    image:
-      image.trim() ||
-      "https://plus.unsplash.com/premium_photo-1677252438411-9a930d7a5168?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  });
+    const { error } = await authClient.signUp.email({
+      name,
+      email,
+      password,
+      image:
+        image.trim() ||
+        "https://plus.unsplash.com/premium_photo-1677252438411-9a930d7a5168?q=8…",
+    });
 
-  if (error) {
-    toast.error(error.message || "Registration failed");
-    return;
-  }
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
 
-  toast.success("Registration successful 🎉");
-  router.push("/login");
-};
+    toast.success("Account created 🎉");
+    router.push("/login");
+  };
+
   const handleGoogle = async () => {
     await authClient.signIn.social({
       provider: "google",
@@ -42,75 +44,77 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 via-white to-gray-200 px-4">
 
-      <div className="card w-full max-w-md bg-base-100 shadow-2xl">
+      <div className="w-full max-w-md bg-white/80 backdrop-blur-xl border border-gray-200 shadow-2xl rounded-3xl p-8">
 
-        <div className="card-body">
+        <h2 className="text-3xl font-bold text-center text-gray-800">
+          Create Account
+        </h2>
+        <p className="text-center text-gray-500 mt-2 mb-6">
+          Join Tiles Gallery
+        </p>
 
-          <h2 className="text-3xl font-bold text-center mb-4">
-            Register
-          </h2>
+        {/* Google */}
+        <button
+          onClick={handleGoogle}
+          className="w-full flex items-center justify-center gap-3 border py-3 rounded-xl hover:bg-gray-100 transition"
+        >
+          <FaGoogle className="text-red-500" />
+          Continue with Google
+        </button>
 
-
-          <form onSubmit={handleRegister} className="space-y-4">
-
-            <input
-              type="text"
-              placeholder="Name"
-              className="input w-full border border-blue-400 focus:outline-none"
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-
-            <input
-              type="email"
-              placeholder="Email"
-              className="input w-full border border-blue-400 focus:outline-none"
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-
-            <input
-              type="text"
-              placeholder="Photo URL"
-              className="input w-full border border-blue-400 focus:outline-none"
-              onChange={(e) => setImage(e.target.value)}
-            />
-
-            <input
-              type="password"
-              placeholder="Password"
-              className="input w-full border border-blue-400 focus:outline-none"
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-
-            <button className="btn btn-info w-full text-white">
-              Register
-            </button>
-
-          </form>
-
-        
-          <button
-            onClick={handleGoogle}
-            className="btn btn-outline w-full mt-3"
-          >
-            Continue with Google
-          </button>
-
-          <p className="text-center mt-4 text-sm">
-            Already have an account?
-            <Link href="/login" className="text-blue-500 ml-1">
-              Login
-            </Link>
-          </p>
-
+        <div className="my-6 text-center text-gray-400 text-sm">
+          OR REGISTER WITH EMAIL
         </div>
 
-      </div>
+        <form onSubmit={handleRegister} className="space-y-4">
 
+          <input
+            type="text"
+            placeholder="Full Name"
+            className="w-full p-3 rounded-xl border focus:ring-2 focus:ring-black outline-none"
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full p-3 rounded-xl border focus:ring-2 focus:ring-black outline-none"
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <input
+            type="text"
+            placeholder="Profile Image URL (optional)"
+            className="w-full p-3 rounded-xl border focus:ring-2 focus:ring-black outline-none"
+            onChange={(e) => setImage(e.target.value)}
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full p-3 rounded-xl border focus:ring-2 focus:ring-black outline-none"
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          <button className="w-full bg-black text-white py-3 rounded-xl hover:scale-[1.02] transition">
+            Register
+          </button>
+
+        </form>
+
+        <p className="text-center mt-5 text-sm">
+          Already have an account?
+          <Link href="/login" className="ml-1 font-semibold text-black">
+            Login
+          </Link>
+        </p>
+
+      </div>
     </div>
   );
 }
