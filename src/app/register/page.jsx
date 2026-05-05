@@ -55,7 +55,6 @@ export default function RegisterPage() {
           Join Tiles Gallery
         </p>
 
-        {/* Google */}
         <button
           onClick={handleGoogle}
           className="w-full flex items-center justify-center gap-3 border py-3 rounded-xl hover:bg-gray-100 transition"

@@ -21,8 +21,8 @@ import { NextResponse } from "next/server";
 export async function PUT(req) {
   const body = await req.json();
 
-  const db = client.db("tilesDB");
-  const users = db.collection("users");
+  const db = client.db("test");
+  const users = db.collection("user");
 
   await users.updateOne(
     { email: body.email },
