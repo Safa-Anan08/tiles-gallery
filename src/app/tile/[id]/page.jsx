@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart,FaShoppingCart } from "react-icons/fa";
 import { useWishlist } from "@/wishlistButton/useWishlist";
+import { useCartButton } from "@/cartButton/useCartButton";
 
 export default function TileDetails() {
   const params = useParams();
@@ -13,7 +14,7 @@ export default function TileDetails() {
   const [tile, setTile] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const session = authClient.useSession();
+  const { data: session } = authClient.useSession();
 
   useEffect(() => {
     const loadTile = async () => {
@@ -36,6 +37,11 @@ export default function TileDetails() {
     toggleWishlist,
     loading: wishLoading,
   } = useWishlist(tile, session?.data?.user);
+   
+   const {
+  isCartAdded,
+  toggleCart,
+} = useCartButton(tile, session?.user);
 
   if (loading) {
     return (
@@ -128,6 +134,19 @@ export default function TileDetails() {
                 ? "Remove from Wishlist"
                 : "Add to Wishlist"}
             </button>
+              <button
+    onClick={toggleCart}
+          className={`mt-4 flex items-center gap-2 px-6 py-3 rounded-full font-semibold shadow-lg transition-all hover:scale-105
+      ${
+        isCartAdded
+          ? "bg-gray-700 text-white"
+          : "bg-gradient-to-r from-blue-500 to-indigo-500 text-white"
+       }
+         `}
+  >
+    <FaShoppingCart />
+    {isCartAdded ? "Remove from Cart" : "Add to Cart"}
+  </button>
 
           </div>
 

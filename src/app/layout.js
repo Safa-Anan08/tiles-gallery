@@ -10,7 +10,7 @@ export default function RootLayout({ children }) {
         <Navbar />
         {children}
         <Footer />
-        <Toaster position="top-right" richColors />
+        <Toaster position="top-right" richColors duration={1500} />
       </body>
 
     </html>

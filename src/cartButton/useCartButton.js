@@ -48,6 +48,7 @@ export function useCartButton(tile, session) {
       if (res.ok) {
         setIsCartAdded(true);
         toast.success("Added to cart ");
+        window.dispatchEvent(new Event("cart-updated"));
       }
     } else {
       const res = await fetch("/api/cart", {
@@ -62,6 +63,7 @@ export function useCartButton(tile, session) {
       if (res.ok) {
         setIsCartAdded(false);
         toast.success("Removed from cart ");
+         window.dispatchEvent(new Event("cart-updated"));
       }
     }
   };

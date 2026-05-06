@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart ,FaShoppingCart} from "react-icons/fa";
 import { toast } from "sonner";
 import Link from "next/link";
 
@@ -13,7 +13,7 @@ export default function MyProfilePage() {
   const [session, setSession] = useState(null);
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [cart, setCart] = useState([]);
   const [editOpen, setEditOpen] = useState(false);
   const [editForm, setEditForm] = useState({
     name: "",
@@ -46,6 +46,9 @@ export default function MyProfilePage() {
       setWishlist(data);
 
       setLoading(false);
+      const cartRes = await fetch(`/api/cart?email=${user.email}`);
+     const cartData = await cartRes.json();
+     setCart(cartData);
     };
 
     load();
@@ -193,7 +196,82 @@ export default function MyProfilePage() {
           </div>
         )}
       </div>
+       <div className="mt-14">
 
+  <h2 className="text-3xl font-bold mb-6 flex gap-3 items-center">
+    Your Cart <FaShoppingCart/>
+  </h2>
+
+  {cart.length === 0 ? (
+    <p className="opacity-60">No cart items</p>
+  ) : (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      {cart.map((item) => (
+        <div
+          key={item._id}
+          className="group bg-white shadow-xl rounded-2xl overflow-hidden hover:shadow-2xl transition"
+        >
+
+          <img
+            src={item.image}
+            className="h-52 w-full object-cover group-hover:scale-105 transition"
+          />
+
+          <div className="p-4">
+
+            <h2 className="font-bold text-lg">{item.title}</h2>
+
+            <div className="flex justify-between mt-3">
+              <span className="font-bold text-black">
+                ${item.price}
+              </span>
+
+              <span className="text-xs px-2 py-1 bg-gray-200 rounded-full">
+                {item.category}
+              </span>
+            </div>
+
+            <p className="text-sm mt-2 opacity-70">
+              Qty: {item.quantity || 1}
+            </p>
+
+            <div className="flex gap-2 mt-4">
+
+              <button
+                onClick={async () => {
+                  await fetch("/api/cart", {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      tileId: item.tileId,
+                      userEmail: session.email,
+                    }),
+                  });
+
+                  setCart((prev) =>
+                    prev.filter((c) => c.tileId !== item.tileId)
+                  );
+
+                  toast.success("Removed from cart");
+                }}
+                className="px-3 py-2 rounded-xl border border-red-500 text-red-500 
+                hover:bg-red-500 hover:text-white transition w-full"
+              >
+                Remove from Cart
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+      ))}
+
+    </div>
+  )}
+
+</div>
       {editOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
 

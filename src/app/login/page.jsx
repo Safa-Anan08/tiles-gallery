@@ -26,7 +26,7 @@ export default function LoginPage() {
       return;
     }
 
-    toast.success("Welcome back 👋");
+    toast.success("Welcome back ");
     router.push("/");
   };
 
@@ -51,7 +51,7 @@ export default function LoginPage() {
 
         <button
           onClick={handleGoogle}
-          className="w-full flex items-center justify-center gap-3 border py-3 rounded-xl hover:bg-gray-100 transition"
+          className="w-full flex items-center justify-center gap-3 border py-3 mb-5 rounded-xl hover:bg-gray-100 transition"
         >
           <FaGoogle className="text-red-500" />
           Continue with Google
