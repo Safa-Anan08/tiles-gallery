@@ -76,12 +76,6 @@ export default function Footer() {
             </li>
 
             <li>
-              <Link href="/wishlist" className="hover:text-white">
-                Wishlist
-              </Link>
-            </li>
-
-            <li>
               <Link href="/my-profile" className="hover:text-white">
                 Profile
               </Link>
