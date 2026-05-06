@@ -76,6 +76,7 @@ export default function MyProfilePage() {
       setWishlist((prev) =>
         prev.filter((item) => (item.tileId || item.id) !== tileId)
       );
+
       toast.success("Removed from wishlist");
     }
   };
@@ -90,6 +91,8 @@ export default function MyProfilePage() {
         image: editForm.image,
       }),
     });
+
+    console.log(res.status);
 
     if (res.ok) {
       setSession({
@@ -107,19 +110,17 @@ export default function MyProfilePage() {
 
   if (loading) return <Loader />;
 
-  const user = session;
-
   return (
     <section className="min-h-screen bg-base-200 p-6 md:p-10">
 
       <div className="max-w-xl mx-auto bg-white shadow-2xl p-8 rounded-3xl text-center">
         <img
-          src={user?.image || "/default.png"}
+          src={session?.image || "/default.png"}
           className="w-28 h-28 rounded-full mx-auto border-4 border-black"
         />
 
-        <h2 className="text-3xl font-bold mt-5">{user?.name}</h2>
-        <p className="opacity-70">{user?.email}</p>
+        <h2 className="text-3xl font-bold mt-5">{session?.name}</h2>
+        <p className="opacity-70">{session?.email}</p>
 
         <button
           onClick={() => setEditOpen(true)}
@@ -138,13 +139,11 @@ export default function MyProfilePage() {
           <p className="opacity-60">No wishlist items</p>
         ) : (
           <div className="grid md:grid-cols-3 gap-6">
-
             {wishlist.map((tile) => {
               const id = tile.tileId || tile.id;
 
               return (
                 <div key={id} className="bg-white shadow-xl rounded-2xl p-4">
-
                   <img src={tile.image} className="h-52 w-full object-cover" />
 
                   <h2 className="font-bold mt-2">{tile.title}</h2>
@@ -155,7 +154,6 @@ export default function MyProfilePage() {
                   </div>
 
                   <div className="flex flex-col gap-2 mt-4">
-
                     <Link
                       href={`/tile/${id}`}
                       className="bg-black text-white py-2 rounded-xl text-center"
@@ -169,13 +167,10 @@ export default function MyProfilePage() {
                     >
                       Remove
                     </button>
-
                   </div>
-
                 </div>
               );
             })}
-
           </div>
         )}
       </div>
@@ -189,13 +184,11 @@ export default function MyProfilePage() {
           <p className="opacity-60">No cart items</p>
         ) : (
           <div className="grid md:grid-cols-3 gap-6">
-
             {cart.map((item) => {
               const id = item.tileId || item.id;
 
               return (
                 <div key={id} className="bg-white shadow-xl rounded-2xl p-4">
-
                   <img src={item.image} className="h-52 w-full object-cover" />
 
                   <h2 className="font-bold mt-2">{item.title}</h2>
@@ -217,6 +210,11 @@ export default function MyProfilePage() {
                         setCart((prev) =>
                           prev.filter((c) => (c.tileId || c.id) !== id)
                         );
+
+                        window.dispatchEvent(
+                          new Event("cart-updated")
+                        );
+
                         toast.success("Removed from cart");
                       }
                     }}
@@ -224,20 +222,16 @@ export default function MyProfilePage() {
                   >
                     Remove
                   </button>
-
                 </div>
               );
             })}
-
           </div>
         )}
       </div>
 
       {editOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-
           <div className="bg-white p-6 rounded-2xl w-[350px]">
-
             <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
 
             <input
@@ -259,7 +253,6 @@ export default function MyProfilePage() {
             />
 
             <div className="flex gap-2">
-
               <button
                 onClick={handleUpdateProfile}
                 className="flex-1 bg-black text-white py-2"
@@ -273,14 +266,11 @@ export default function MyProfilePage() {
               >
                 Cancel
               </button>
-
             </div>
-
           </div>
-
         </div>
       )}
-
     </section>
   );
 }
+
