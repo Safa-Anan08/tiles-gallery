@@ -176,7 +176,7 @@ export default function TileDetails() {
   const [loading, setLoading] = useState(true);
 
   const { data: session } = authClient.useSession();
-  const user = session?.data?.user; // ✅ FIXED
+  const user = session?.user; 
 
   useEffect(() => {
     const loadTile = async () => {
