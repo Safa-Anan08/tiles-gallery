@@ -6,6 +6,7 @@ import { authClient } from "@/lib/auth-client";
 import { FaHeart,FaShoppingCart } from "react-icons/fa";
 import { useWishlist } from "@/wishlistButton/useWishlist";
 import { useCartButton } from "@/cartButton/useCartButton";
+import Loader from "@/components/Loader";
 
 export default function TileDetails() {
   const params = useParams();
@@ -43,13 +44,7 @@ export default function TileDetails() {
   toggleCart,
 } = useCartButton(tile, session?.user);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-gray-300 border-t-black rounded-full animate-spin"></div>
-      </div>
-    );
-  }
+ if (loading) return <Loader />;
 
   if (!tile) {
     return (

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { FaShoppingCart } from "react-icons/fa";
+import Loader from "@/components/Loader";
+
 export default function CartPage() {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,13 +50,7 @@ const handleRemove = async (tileId, userEmail) => {
     toast.error("Failed to remove");
   }
 };
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
-  }
+ if (loading) return <Loader />;
 
   return (
     <section className="min-h-screen bg-base-200 p-6 md:p-10">

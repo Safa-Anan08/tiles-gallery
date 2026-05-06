@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import TileCard from "@/components/TileCard";
 import { authClient } from "@/lib/auth-client";
-
+import Loader from "@/components/Loader";
 import "swiper/css";
 
 export default function AllTilesPage() {
@@ -34,13 +34,7 @@ export default function AllTilesPage() {
 
   const visibleTiles = filteredTiles.slice(0, visible);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex justify-center items-center">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
-  }
+ if (loading) return <Loader />;
 
   return (
     <section className="bg-gray-100 min-h-screen">

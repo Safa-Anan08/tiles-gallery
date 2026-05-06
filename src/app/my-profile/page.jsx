@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { FaHeart ,FaShoppingCart} from "react-icons/fa";
 import { toast } from "sonner";
 import Link from "next/link";
+import Loader from "@/components/Loader";
 
 export default function MyProfilePage() {
   const router = useRouter();
@@ -103,14 +104,8 @@ export default function MyProfilePage() {
       toast.error("Error updating profile");
     }
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
-  }
+  
+if (loading) return <Loader />;
 
   const user = session;
 
