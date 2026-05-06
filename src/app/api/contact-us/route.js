@@ -8,7 +8,7 @@ export async function POST(req) {
     const body = await req.json();
 
     await client.connect();
-    const db = client.db("tiles-gallery");
+    const db = client.db("tilesDB");
     const messages = db.collection("messages");
 
     await messages.insertOne({

@@ -20,7 +20,7 @@ export default function Navbar() {
 const navLink = (href, label) => (
   <Link
     href={href}
-    onClick={() => setOpen(false)}   // ✅ IMPORTANT FIX
+    onClick={() => setOpen(false)}  
     className={`px-3 py-2 rounded-md text-sm font-medium ${
       pathname === href
         ? "text-blue-600"

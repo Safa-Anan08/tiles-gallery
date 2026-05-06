@@ -57,9 +57,6 @@ export default function LoginPage() {
           Continue with Google
         </button>
 
-        <div className="my-6 text-center text-gray-400 text-sm">
-          OR LOGIN WITH EMAIL
-        </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
 
@@ -86,7 +83,7 @@ export default function LoginPage() {
         </form>
 
         <p className="text-center mt-5 text-sm">
-          Don’t have an account?
+          Don't have an account?
           <Link href="/register" className="ml-1 font-semibold text-black">
             Register
           </Link>

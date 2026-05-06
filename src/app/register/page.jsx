@@ -63,10 +63,6 @@ export default function RegisterPage() {
           Continue with Google
         </button>
 
-        <div className="my-6 text-center text-gray-400 text-sm">
-          OR REGISTER WITH EMAIL
-        </div>
-
         <form onSubmit={handleRegister} className="space-y-4">
 
           <input

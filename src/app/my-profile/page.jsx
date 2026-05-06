@@ -180,7 +180,7 @@ export default function MyProfilePage() {
                       className="px-3 py-2 rounded-xl border border-red-500 text-red-500 
                       hover:bg-red-500 hover:text-white transition flex items-center justify-center gap-2"
                     >
-                      Remove <FaHeart />
+                      Remove from Wishlist<FaHeart />
                     </button>
 
                   </div>
