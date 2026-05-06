@@ -8,16 +8,16 @@ export default function FeaturedTiles() {
   const [session, setSession] = useState(null);
 
   useEffect(() => {
-    fetch("/db.json")
-      .then((res) => res.json())
-      .then((data) => setTiles(data));
+  fetch("/db.json")
+    .then((res) => res.json())
+    .then((data) => setTiles(data.tiles || []));
 
-    fetch("/api/auth/get-session")
-      .then((res) => res.json())
-      .then((data) => setSession(data?.user || null));
-  }, []);
+  fetch("/api/auth/get-session")
+    .then((res) => res.json())
+    .then((data) => setSession(data?.user || null));
+}, []);
 
-  const featured = tiles.slice(0, 4);
+  const featured = Array.isArray(tiles) ? tiles.slice(0, 4) : [];
 
   return (
     <section className="py-20 px-6 bg-[#f7f4ef]">

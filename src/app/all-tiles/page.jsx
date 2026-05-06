@@ -21,7 +21,7 @@ export default function AllTilesPage() {
     fetch("/db.json")
       .then((res) => res.json())
       .then((data) => {
-        setTiles(data);
+        setTiles(data.tiles || []);
         setLoading(false);
       });
   }, []);
