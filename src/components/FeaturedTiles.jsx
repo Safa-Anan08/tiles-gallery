@@ -8,7 +8,7 @@ export default function FeaturedTiles() {
   const [session, setSession] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/tiles")
+    fetch("/db.json")
       .then((res) => res.json())
       .then((data) => setTiles(data));
 

@@ -19,11 +19,16 @@ export default function TileDetails() {
 
   useEffect(() => {
     const loadTile = async () => {
-      try {
-        const res = await fetch(`http://localhost:5000/tiles/${id}`);
-        const data = await res.json();
-        setTile(data);
-      } catch (err) {
+     try {
+  const res = await fetch("/db.json");
+  const data = await res.json();
+
+  const tile = data.tiles.find(
+    (t) => t.id === parseInt(id)
+  );
+
+  setTile(tile);
+}  catch (err) {
         console.log(err);
       } finally {
         setLoading(false);

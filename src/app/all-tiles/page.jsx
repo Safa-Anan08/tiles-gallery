@@ -18,7 +18,7 @@ export default function AllTilesPage() {
   const { data: session } = authClient.useSession();
 
   useEffect(() => {
-    fetch("http://localhost:5000/tiles")
+    fetch("/db.json")
       .then((res) => res.json())
       .then((data) => {
         setTiles(data);
