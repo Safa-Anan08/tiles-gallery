@@ -3,9 +3,11 @@
 A modern full-stack tile marketplace built with **Next.js**, featuring authentication, wishlist, cart management, user profiles, and responsive UI.
 
 ---
+# Live Links
+
+https://tiles-gallery-smoky.vercel.app/
 
 ##  Live Features
-
 ###  Authentication
 - Email / Password Login
 - Google Sign In
@@ -202,6 +204,3 @@ Passionate about building responsive and user-friendly web applications.
 ##  License
 
 This project is for educational and portfolio purposes.
-
-### GitHub repo link - https://github.com/Safa-Anan08/tiles-gallery
-### Live link - https://tiles-gallery-smoky.vercel.app/
